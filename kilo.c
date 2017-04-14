@@ -1,4 +1,5 @@
 /*** includes ***/
+// http://viewsourcecode.org/snaptoken/kilo/index.html
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -11,6 +12,7 @@
 struct termios orig_termios;
 
 /*** terminal ***/
+// http://viewsourcecode.org/snaptoken/kilo/02.enteringRawMode.html
 
 void die(const char *s) {
   perror(s);
