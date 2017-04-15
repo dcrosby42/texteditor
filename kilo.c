@@ -11,16 +11,19 @@
 
 #define CTRL_KEY(k) ((k) & 0x1f)
 
+
 /*** data ***/
 
 struct termios orig_termios;
+
+/*** predeclares ***/
+void editorClearScreen();
 
 /*** terminal ***/
 // http://viewsourcecode.org/snaptoken/kilo/02.enteringRawMode.html
 
 void die(const char *s) {
-  write(STDOUT_FILENO, "\x1b[2J", 4); // J=Erase In Display, 2=entire screen
-  write(STDOUT_FILENO, "\x1b[H", 3); // H=Cursor Position (default upper left, same as 1;1H
+  editorClearScreen();
 
   perror(s);
   exit(1);
@@ -58,9 +61,12 @@ char editorReadKey() {
 
 /*** output ***/
 
-void editorRefreshScreen() {
+void editorClearScreen() {
   write(STDOUT_FILENO, "\x1b[2J", 4); // J=Erase In Display, 2=entire screen
   write(STDOUT_FILENO, "\x1b[H", 3); // H=Cursor Position (default upper left, same as 1;1H
+}
+void editorRefreshScreen() {
+  editorClearScreen();
 }
 
 /*** input ***/
@@ -69,8 +75,7 @@ void editorProcessKeypress() {
   char c = editorReadKey();
   switch (c) {
     case CTRL_KEY('q'):
-      write(STDOUT_FILENO, "\x1b[2J", 4); // J=Erase In Display, 2=entire screen
-      write(STDOUT_FILENO, "\x1b[H", 3); // H=Cursor Position (default upper left, same as 1;1H
+      editorClearScreen();
       exit(0);
       break;
   }
